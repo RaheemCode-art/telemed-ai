@@ -1,10 +1,24 @@
 import { Response } from 'express';
 import Appointment from '../models/Appointment';
+import User from '../models/User';
 import { AuthRequest } from '../middleware/authMiddleware';
 
 export const createAppointment = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { doctorId, appointmentDate, appointmentTime, type, notes } = req.body;
+
+    if (!doctorId || !appointmentDate || !appointmentTime) {
+      res.status(400).json({ message: 'Please provide doctorId, appointmentDate, and appointmentTime' });
+      return;
+    }
+
+    const doctor = await User.findOne({ _id: doctorId, role: 'doctor' });
+    if (!doctor) {
+      res.status(404).json({ message: 'Selected practitioner is invalid or inactive' });
+      return;
+    }
+
+    const consultationRoom = `room_${req.user?._id}_${Date.now()}`;
 
     const appointment = await Appointment.create({
       patientId: req.user?._id,
@@ -13,6 +27,8 @@ export const createAppointment = async (req: AuthRequest, res: Response): Promis
       appointmentTime,
       type: type || 'Video Consult',
       notes,
+      status: 'Confirmed',
+      consultationRoom,
     });
 
     res.status(201).json(appointment);
@@ -27,11 +43,15 @@ export const getMyAppointments = async (req: AuthRequest, res: Response): Promis
 
     if (req.user?.role === 'doctor') {
       appointments = await Appointment.find({ doctorId: req.user._id })
-        .populate('patientId', 'firstName lastName email activeConditions')
+        .populate('patientId', 'firstName lastName email activeConditions completedOnboarding')
+        .sort({ createdAt: -1 });
+    } else if (req.user?.role === 'patient') {
+      appointments = await Appointment.find({ patientId: req.user._id })
+        .populate('doctorId', 'firstName lastName specialty institution bio')
         .sort({ createdAt: -1 });
     } else {
-      appointments = await Appointment.find({ patientId: req.user?._id })
-        .populate('doctorId', 'firstName lastName specialty institution')
+      appointments = await Appointment.find()
+        .populate('patientId doctorId', 'firstName lastName email role specialty')
         .sort({ createdAt: -1 });
     }
 

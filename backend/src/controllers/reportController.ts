@@ -6,8 +6,8 @@ import { generatePatientReportSummary } from '../services/aiService';
 
 export const uploadAndSummarizeReport = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    if (!req.file) {
-      res.status(400).json({ message: 'Please upload a valid PDF medical report' });
+    if (!req.file || req.file.mimetype !== 'application/pdf') {
+      res.status(400).json({ message: 'Only PDF medical reports are permitted for upload' });
       return;
     }
 
@@ -20,18 +20,18 @@ export const uploadAndSummarizeReport = async (req: AuthRequest, res: Response):
       uploadStatus: 'Processing',
     });
 
-    let aiSummary = '';
     try {
       const extractedText = await extractTextFromPDF(req.file.path);
-      aiSummary = await generatePatientReportSummary(extractedText);
+      const aiSummary = await generatePatientReportSummary(extractedText);
+      
+      report.aiSummary = aiSummary;
+      report.uploadStatus = 'Completed';
     } catch (aiError) {
-      aiSummary = 'Patient exhibits stable baseline clinical parameters from uploaded document text. Recommended regular monitoring and practitioner consultation during scheduled follow-up visits.';
+      report.aiSummary = 'AI summary generation failed. Please consult your doctor directly to review the original uploaded PDF document.';
+      report.uploadStatus = 'Failed';
     }
 
-    report.aiSummary = aiSummary;
-    report.uploadStatus = 'Completed';
     await report.save();
-
     res.status(201).json(report);
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
@@ -40,7 +40,15 @@ export const uploadAndSummarizeReport = async (req: AuthRequest, res: Response):
 
 export const getMyReports = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const reports = await MedicalReport.find({ patientId: req.user?._id }).sort({ createdAt: -1 });
+    const query: any = {};
+
+    if (req.user?.role === 'patient') {
+      query.patientId = req.user._id;
+    } else if ((req.user?.role === 'doctor' || req.user?.role === 'admin') && req.query.patientId) {
+      query.patientId = req.query.patientId;
+    }
+
+    const reports = await MedicalReport.find(query).sort({ createdAt: -1 });
     res.status(200).json(reports);
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });

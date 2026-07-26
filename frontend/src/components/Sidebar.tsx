@@ -11,8 +11,16 @@ import {
   History, 
   Video, 
   Settings, 
-  LogOut 
+  LogOut,
+  Stethoscope
 } from 'lucide-react';
+
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+  roles: string[];
+}
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -34,16 +42,21 @@ export default function Sidebar() {
 
   const displayName = currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : 'User Profile';
   const displayRole = currentUser?.role === 'doctor' ? (currentUser.specialty || 'Medical Specialist') : 'Patient Portal';
-  const initials = currentUser ? `${currentUser.firstName[0]}${currentUser.lastName[0]}`.toUpperCase() : 'UP';
+  const initials = currentUser ? `${currentUser.firstName[0] || ''}${currentUser.lastName[0] || ''}`.toUpperCase() : 'UP';
 
-  const navItems = [
-    { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'My Patients', href: '/dashboard/patients', icon: Users },
-    { name: 'Calendar', href: '/dashboard/calendar', icon: Calendar },
-    { name: 'My Reports', href: '/dashboard/reports', icon: FileText },
-    { name: 'E-Prescriptions', href: '/dashboard/prescriptions', icon: FileText },
-    { name: 'Medical Records', href: '/dashboard/records', icon: History },
+  const allNavItems: NavItem[] = [
+    { name: 'Overview', href: '/dashboard', icon: LayoutDashboard, roles: ['patient', 'doctor'] },
+    { name: 'Book Appointment', href: '/booking', icon: Stethoscope, roles: ['patient'] },
+    { name: 'My Reports', href: '/dashboard/reports', icon: FileText, roles: ['patient', 'doctor'] },
+    { name: 'My Patients', href: '/dashboard/patients', icon: Users, roles: ['doctor'] },
+    { name: 'Calendar', href: '/dashboard/calendar', icon: Calendar, roles: ['doctor'] },
+    { name: 'E-Prescriptions', href: '/dashboard/prescriptions', icon: FileText, roles: ['doctor'] },
+    { name: 'Medical Records', href: '/dashboard/records', icon: History, roles: ['patient', 'doctor'] },
   ];
+
+  const filteredNavItems = allNavItems.filter(item => 
+    !currentUser || item.roles.includes(currentUser.role)
+  );
 
   const handleLogout = () => {
     if (typeof window !== 'undefined') {
@@ -67,7 +80,7 @@ export default function Sidebar() {
         </div>
 
         <nav className="space-y-1.5">
-          {navItems.map((item) => {
+          {filteredNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
@@ -90,11 +103,11 @@ export default function Sidebar() {
 
       <div className="space-y-4 pt-6 border-t border-slate-100">
         <Link
-          href="/dashboard/consultation"
+          href={currentUser?.role === 'doctor' ? '/dashboard/consultation' : '/booking'}
           className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-medium py-3 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
         >
-          <Video className="w-4 h-4" />
-          <span>Start Consultation</span>
+          {currentUser?.role === 'doctor' ? <Video className="w-4 h-4" /> : <Stethoscope className="w-4 h-4" />}
+          <span>{currentUser?.role === 'doctor' ? 'Start Consultation' : 'Book Consultation'}</span>
         </Link>
 
         <div className="space-y-1">

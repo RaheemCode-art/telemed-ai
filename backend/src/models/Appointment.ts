@@ -6,8 +6,8 @@ export interface IAppointment extends Document {
   appointmentDate: string;
   appointmentTime: string;
   duration: number;
-  status: 'CONFIRMED' | 'PENDING' | 'IN WAITING ROOM' | 'COMPLETED';
-  type: 'Video Consult' | 'Secure Chat';
+  status: string;
+  type: string;
   notes?: string;
   prescription?: string;
 }
@@ -21,12 +21,12 @@ const AppointmentSchema: Schema = new Schema(
     duration: { type: Number, default: 15 },
     status: {
       type: String,
-      enum: ['CONFIRMED', 'PENDING', 'IN WAITING ROOM', 'COMPLETED'],
+      enum: ['CONFIRMED', 'PENDING', 'IN WAITING ROOM', 'COMPLETED', 'Confirmed', 'Pending', 'In Waiting Room', 'Completed', 'active', 'confirmed', 'pending'],
       default: 'PENDING',
     },
     type: {
       type: String,
-      enum: ['Video Consult', 'Secure Chat'],
+      enum: ['Video Consult', 'Secure Chat', 'Text Chat Only', 'video', 'chat'],
       default: 'Video Consult',
     },
     notes: { type: String },
@@ -35,4 +35,4 @@ const AppointmentSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<IAppointment>('Appointment', AppointmentSchema);
+export default mongoose.models.Appointment || mongoose.model<IAppointment>('Appointment', AppointmentSchema);

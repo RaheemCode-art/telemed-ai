@@ -14,15 +14,19 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
+    const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+    cb(null, `${uniqueSuffix}-${sanitizedName}`);
   },
 });
 
 const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  if (file.mimetype === 'application/pdf') {
+  const isPdfMime = file.mimetype === 'application/pdf';
+  const isPdfExt = path.extname(file.originalname).toLowerCase() === '.pdf';
+
+  if (isPdfMime && isPdfExt) {
     cb(null, true);
   } else {
-    cb(new Error('Only PDF reports are allowed in the MVP'));
+    cb(new Error('Only PDF medical reports are permitted in this MVP'));
   }
 };
 

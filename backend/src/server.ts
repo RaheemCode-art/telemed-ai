@@ -11,6 +11,7 @@ import aiRoutes from './routes/aiRoutes';
 import { initializeSocket } from './services/socketService';
 import reportRoutes from './routes/reportRoutes';
 import adminRoutes from './routes/adminRoutes';
+import userRoutes from './routes/userRoutes';
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/uploads', express.static('uploads'));
+app.use('/api/users', userRoutes);
 
 
 app.get('/', (req: Request, res: Response) => {

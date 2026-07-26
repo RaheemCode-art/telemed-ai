@@ -1,5 +1,5 @@
 'use client';
-
+import AuthGuard from '@/components/AuthGuard';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShieldCheck, Users, UserCheck, Calendar, Plus, Search, LogOut, Copy, Check, AlertCircle } from 'lucide-react';
@@ -114,6 +114,7 @@ export default function AdminDashboard() {
   );
 
   return (
+  
     <div className="min-h-screen bg-[#f8fafc] flex flex-col font-sans text-slate-800">
       <header className="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

@@ -40,3 +40,11 @@ export const authorize = (...roles: string[]) => {
     next();
   };
 };
+
+export const requireOnboarding = (req: AuthRequest, res: Response, next: NextFunction): void => {
+  if (req.user && req.user.role === 'patient' && !req.user.completedOnboarding) {
+    res.status(403).json({ message: 'Mandatory profile onboarding incomplete. Please complete your medical profile before proceeding.' });
+    return;
+  }
+  next();
+};
