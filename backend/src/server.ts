@@ -12,11 +12,17 @@ import { initializeSocket } from './services/socketService';
 import reportRoutes from './routes/reportRoutes';
 import adminRoutes from './routes/adminRoutes';
 import userRoutes from './routes/userRoutes';
+import { seedAdmin } from './config/seedAdmin';
+
 
 dotenv.config();
 
 
-connectDB();
+connectDB().then(() => {
+  seedAdmin();
+});
+
+
 
 const app: Application = express();
 const server = http.createServer(app);

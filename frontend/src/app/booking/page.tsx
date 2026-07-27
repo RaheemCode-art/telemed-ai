@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Calendar as CalendarIcon, Clock, UserCheck, AlertCircle, CheckCircle2, ArrowRight, ShieldAlert } from 'lucide-react';
+import { Clock, AlertCircle, CheckCircle2, ArrowRight, ShieldAlert } from 'lucide-react';
 import DashboardLayout from '@/components/DashboardLayout';
 import api from '@/lib/axios';
 
@@ -12,7 +12,7 @@ export default function BookingPage() {
   const [selectedDoctor, setSelectedDoctor] = useState<string>('');
   const [appointmentDate, setAppointmentDate] = useState<string>('');
   const [appointmentTime, setAppointmentTime] = useState<string>('10:00 AM');
-  const [type, setType] = useState<string>('Video Consult');
+  const [type, setType] = useState<string>('Text Chat Only');
   
   const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -92,10 +92,10 @@ export default function BookingPage() {
 
       {success ? (
         <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center max-w-xl mx-auto shadow-sm my-12">
-          <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+          <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-8 h-8" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900">Consultation Scheduled!</h2>
+          <h2 className="text-xl font-bold text-slate-900">Consultation Scheduled</h2>
           <p className="text-sm text-slate-500 mt-2">Your appointment has been confirmed. Redirecting to your portal...</p>
         </div>
       ) : (
@@ -185,19 +185,8 @@ export default function BookingPage() {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Session Mode</label>
-              <div className="grid grid-cols-2 gap-3">
-                {['Video Consult', 'Text Chat Only'].map((mode) => (
-                  <button
-                    type="button"
-                    key={mode}
-                    onClick={() => setType(mode)}
-                    className={`py-3 px-4 rounded-xl text-xs font-bold border transition-all ${
-                      type === mode ? 'bg-slate-900 border-slate-900 text-white shadow-sm' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    {mode}
-                  </button>
-                ))}
+              <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">
+                Real-time Text Consultation
               </div>
             </div>
 
