@@ -37,7 +37,7 @@ const handleLogin = async (e: React.FormEvent) => {
     } else if (userData.role === 'doctor') {
       router.push('/dashboard');
     } else if (userData.role === 'admin') {
-      router.push('/admin-dashboard');
+      router.push('/admin');
     } else {
       router.push('/dashboard');
     }
