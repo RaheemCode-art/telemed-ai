@@ -1,16 +1,32 @@
 import { Server as SocketIOServer, Socket } from 'socket.io';
+import Message from '../models/Message';
 
 export const initializeSocket = (io: SocketIOServer): void => {
   io.on('connection', (socket: Socket) => {
     console.log(`Client Connected: ${socket.id}`);
 
-    socket.on('join-room', (roomId: string, userId: string) => {
+    socket.on('join_room', (roomId: string, userId?: string) => {
       socket.join(roomId);
-      socket.to(roomId).emit('user-connected', userId);
+      if (userId) {
+        socket.to(roomId).emit('user_connected', userId);
+      }
     });
 
-    socket.on('send-message', (data: { roomId: string; sender: string; message: string; timestamp: string }) => {
-      io.to(data.roomId).emit('receive-message', data);
+    socket.on('send_message', async (data: { roomId: string; sender: string; text: string; timestamp?: string }) => {
+      socket.to(data.roomId).emit('receive_message', data);
+
+      try {
+        await Message.create({
+          appointmentId: data.roomId,
+          sender: data.sender,
+          text: data.text,
+          timestamp: data.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+        
+        console.log("Message successfully saved to database");
+      } catch (error) {
+        console.error("Failed to save message to database:", error);
+      }
     });
 
     socket.on('call-user', (data: { userToCall: string; signalData: any; from: string; name: string }) => {

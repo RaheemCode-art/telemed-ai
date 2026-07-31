@@ -43,7 +43,7 @@ export const getMyAppointments = async (req: AuthRequest, res: Response): Promis
 
     if (req.user?.role === 'doctor') {
       appointments = await Appointment.find({ doctorId: req.user._id })
-        .populate('patientId', 'firstName lastName email activeConditions completedOnboarding')
+        .populate('patientId', 'firstName lastName email age gender allergies currentMedications current_medications preExistingConditions pre_existing_conditions activeConditions completedOnboarding')
         .sort({ createdAt: -1 });
     } else if (req.user?.role === 'patient') {
       appointments = await Appointment.find({ patientId: req.user._id })
@@ -51,7 +51,7 @@ export const getMyAppointments = async (req: AuthRequest, res: Response): Promis
         .sort({ createdAt: -1 });
     } else {
       appointments = await Appointment.find()
-        .populate('patientId doctorId', 'firstName lastName email role specialty')
+        .populate('patientId doctorId', 'firstName lastName email role specialty age gender allergies')
         .sort({ createdAt: -1 });
     }
 

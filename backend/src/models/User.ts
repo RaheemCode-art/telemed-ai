@@ -16,6 +16,8 @@ export interface IUser extends Document {
   emergencyContact?: string;
   completedOnboarding: boolean;
   specialty?: string;
+  licenseNumber?: string;
+  institution?: string;
   bio?: string;
   activeStatus?: boolean;
   createdByAdmin?: boolean;
@@ -30,7 +32,7 @@ const UserSchema: Schema = new Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String },
     role: { type: String, enum: ['patient', 'doctor', 'admin'], default: 'patient' },
     age: { type: Number },
     gender: { type: String },
@@ -42,6 +44,8 @@ const UserSchema: Schema = new Schema(
     emergencyContact: { type: String },
     completedOnboarding: { type: Boolean, default: false },
     specialty: { type: String },
+    licenseNumber: { type: String },
+    institution: { type: String },
     bio: { type: String },
     activeStatus: { type: Boolean, default: true },
     createdByAdmin: { type: Boolean, default: false },

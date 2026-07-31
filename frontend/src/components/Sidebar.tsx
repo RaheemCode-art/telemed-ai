@@ -60,7 +60,6 @@ export default function Sidebar() {
     { name: 'My Patients', href: '/dashboard/patients', icon: Users, roles: ['doctor'] },
     { name: 'Calendar', href: '/dashboard/calendar', icon: Calendar, roles: ['doctor'] },
     { name: 'E-Prescriptions', href: '/dashboard/prescriptions', icon: FileText, roles: ['doctor'] },
-    { name: 'Medical Records', href: '/dashboard/records', icon: History, roles: ['patient', 'doctor'] },
   ];
 
   const filteredNavItems = allNavItems.filter(item =>
@@ -135,7 +134,7 @@ export default function Sidebar() {
             className="w-full flex items-center gap-3 px-3.5 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50"
           >
             <Settings className="w-4 h-4" />
-            <span>Settings</span>
+            <span>Profile</span>
           </Link>
           <button
             onClick={handleLogout}

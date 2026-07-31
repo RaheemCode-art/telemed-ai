@@ -13,24 +13,40 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError('');
+  setLoading(true);
 
-    try {
-      const response = await api.post('/auth/login', { email, password });
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data));
-      }
-      router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid email or password');
-    } finally {
-      setLoading(false);
+  try {
+    const response = await api.post('/auth/login', { email, password });
+    
+    const userData = response.data.user || response.data;
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(userData));
     }
-  };
+
+    if (userData.role === 'patient') {
+      if (userData.completedOnboarding === true || userData.completed_onboarding === true) {
+        router.push('/dashboard');
+      } else {
+        router.push('/onboarding');
+      }
+    } else if (userData.role === 'doctor') {
+      router.push('/dashboard');
+    } else if (userData.role === 'admin') {
+      router.push('/admin-dashboard');
+    } else {
+      router.push('/dashboard');
+    }
+  } catch (err: any) {
+    setError(err.response?.data?.message || 'Invalid email or password');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#f8fafc] grid grid-cols-1 lg:grid-cols-2 font-sans text-slate-800">

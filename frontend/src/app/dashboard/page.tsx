@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Calendar, FileText, Clock, Stethoscope, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Calendar, FileText, Clock, Stethoscope, CheckCircle2, AlertCircle, MessageSquare } from 'lucide-react';
 import DashboardLayout from '@/components/DashboardLayout';
 import api from '@/lib/axios';
 
@@ -126,9 +127,18 @@ export default function DashboardPage() {
                         <p className="text-xs text-slate-500">{app.appointmentDate} at {app.appointmentTime}</p>
                       </div>
                     </div>
-                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-600 border border-emerald-200 uppercase">
-                      {app.status}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className="px-3 py-1 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-600 border border-emerald-200 uppercase">
+                        {app.status}
+                      </span>
+                      <Link 
+                        href={`/consultation?id=${app._id}`}
+                        className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        Join Chat
+                      </Link>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -138,7 +148,7 @@ export default function DashboardPage() {
           <section className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-slate-900">Recent AI Summarized Reports</h2>
-              <button onClick={() => router.push('/reports')} className="text-xs font-bold text-blue-600 hover:underline">Upload New</button>
+              <button onClick={() => router.push('/dashboard/reports')} className="text-xs font-bold text-blue-600 hover:underline">Upload New</button>
             </div>
 
             {reports.length === 0 ? (

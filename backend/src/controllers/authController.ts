@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
+import { AuthRequest } from '../middleware/authMiddleware';
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -26,6 +27,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       licenseNumber,
       institution,
       bio,
+      completedOnboarding: false,
     });
 
     const token = jwt.sign(
@@ -40,6 +42,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       lastName: user.lastName,
       email: user.email,
       role: user.role,
+      completedOnboarding: user.completedOnboarding,
       token,
     });
   } catch (error) {
@@ -75,12 +78,14 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       lastName: user.lastName,
       email: user.email,
       role: user.role,
+      completedOnboarding: user.completedOnboarding,
       token,
     });
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
   }
 };
+
 export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user?._id;

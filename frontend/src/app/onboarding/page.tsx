@@ -42,7 +42,7 @@ export default function OnboardingPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -60,15 +60,10 @@ export default function OnboardingPage() {
         completedOnboarding: true,
       };
 
-      await api.put('/auth/profile', payload);
+      const response = await api.put('/auth/profile', payload);
 
       if (typeof window !== 'undefined') {
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-          const user = JSON.parse(userStr);
-          const updatedUser = { ...user, ...payload, completedOnboarding: true };
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-        }
+        localStorage.setItem('user', JSON.stringify(response.data));
       }
 
       router.push('/dashboard');

@@ -29,6 +29,7 @@ export const uploadAndSummarizeReport = async (req: AuthRequest, res: Response):
     } catch (aiError) {
       report.aiSummary = 'AI summary generation failed. Please consult your doctor directly to review the original uploaded PDF document.';
       report.uploadStatus = 'Failed';
+      console.error('PDF AI Processing Error Hacked:', aiError); // YEH LINE ADD KARO
     }
 
     await report.save();

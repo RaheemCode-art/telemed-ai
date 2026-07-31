@@ -11,6 +11,7 @@ import aiRoutes from './routes/aiRoutes';
 import { initializeSocket } from './services/socketService';
 import reportRoutes from './routes/reportRoutes';
 import adminRoutes from './routes/adminRoutes';
+import messageRoutes from './routes/messageRoutes';
 import userRoutes from './routes/userRoutes';
 import { seedAdmin } from './config/seedAdmin';
 
@@ -46,6 +47,7 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRoutes);
+app.use('/api/messages', messageRoutes);
 
 
 app.get('/', (req: Request, res: Response) => {
