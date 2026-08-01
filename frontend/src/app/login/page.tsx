@@ -1,5 +1,5 @@
 'use client';
-
+import { Activity } from 'lucide-react';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -56,10 +56,10 @@ const handleLogin = async (e: React.FormEvent) => {
 
         <div className="relative z-10">
           <div className="flex items-center gap-2.5 text-xl font-bold tracking-tight">
-            <div className="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-300 font-black">
-              T
+              <div className="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-600 shadow-sm">
+              <Activity className="w-5 h-5 stroke-[2.5]" />
             </div>
-            <span>TeleMed Professional</span>
+            <span>TeleMed AI</span>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ const handleLogin = async (e: React.FormEvent) => {
             </div>
             <div>
               <div className="font-bold text-sm text-white">HIPAA Compliant Secure Portal</div>
-              <div className="text-xs text-blue-200">End-to-end 256-bit encryption for all clinical sessions.</div>
+              <div className="text-xs text-blue-200">End-to-end  encryption for all clinical sessions.</div>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@ const handleLogin = async (e: React.FormEvent) => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="dr.smith@hospital.org"
+                  placeholder="abc@gmail.com"
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
                 />
               </div>
@@ -146,14 +146,14 @@ const handleLogin = async (e: React.FormEvent) => {
             </div>
 
             <div className="flex items-center gap-2 pt-1">
-              <input
+              {/* <input
                 type="checkbox"
                 id="remember"
                 className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-              />
-              <label htmlFor="remember" className="text-xs font-medium text-slate-600 cursor-pointer">
+              /> */}
+              {/* <label htmlFor="remember" className="text-xs font-medium text-slate-600 cursor-pointer">
                 Remember this device for 30 days
-              </label>
+              </label> */}
             </div>
 
             <button

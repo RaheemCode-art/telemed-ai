@@ -58,8 +58,8 @@ export default function Sidebar() {
     { name: 'Book Appointment', href: '/booking', icon: Stethoscope, roles: ['patient'] },
     { name: 'My Reports', href: '/dashboard/reports', icon: FileText, roles: ['patient', 'doctor'] },
     { name: 'My Patients', href: '/dashboard/patients', icon: Users, roles: ['doctor'] },
-    { name: 'Calendar', href: '/dashboard/calendar', icon: Calendar, roles: ['doctor'] },
-    { name: 'E-Prescriptions', href: '/dashboard/prescriptions', icon: FileText, roles: ['doctor'] },
+    // { name: 'Calendar', href: '/dashboard/calendar', icon: Calendar, roles: ['doctor'] },
+    // { name: 'E-Prescriptions', href: '/dashboard/prescriptions', icon: FileText, roles: ['doctor'] },
   ];
 
   const filteredNavItems = allNavItems.filter(item =>
@@ -110,7 +110,9 @@ export default function Sidebar() {
       </div>
 
       <div className="space-y-4 pt-6 border-t border-slate-100">
-        {currentUser?.role === 'admin' ? (
+        
+        {/* Admin ka button */}
+        {currentUser?.role === 'admin' && (
           <Link
             href="/admin"
             className="w-full bg-purple-600 hover:bg-purple-700 active:scale-[0.99] text-white font-medium py-3 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
@@ -118,15 +120,20 @@ export default function Sidebar() {
             <UserPlus className="w-4 h-4" />
             <span>Manage Doctors</span>
           </Link>
-        ) : (
+        )}
+
+        {/* Patient ka button */}
+        {currentUser?.role === 'patient' && (
           <Link
-            href={currentUser?.role === 'doctor' ? '/dashboard/consultation' : '/booking'}
+            href="/booking"
             className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-medium py-3 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
           >
-            {currentUser?.role === 'doctor' ? <Video className="w-4 h-4" /> : <Stethoscope className="w-4 h-4" />}
-            <span>{currentUser?.role === 'doctor' ? 'Start Consultation' : 'Book Consultation'}</span>
+            <Stethoscope className="w-4 h-4" />
+            <span>Book Consultation</span>
           </Link>
         )}
+
+        {/* Doctor ke liye yahan se button hata diya gaya hai */}
 
         <div className="space-y-1">
           <Link

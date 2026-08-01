@@ -70,9 +70,9 @@ export default function ConsultationPortal() {
           setUserRole(u.role || 'patient');
           if (u.role === 'patient') {
             setPatientContext({
-              name: `${u.firstName || 'Eleanor'} ${u.lastName || 'Vance'}`,
-              age: u.age || 42,
-              gender: u.gender || 'Female',
+              name: `${u.firstName || 'Raheem'} ${u.lastName || 'Kandhro'}`,
+              age: u.age || 22,
+              gender: u.gender || 'male',
               weight: u.weight || 68,
               height: u.height || 165,
               allergies: u.allergies?.length ? u.allergies : ['Penicillin (Default)'],
@@ -139,7 +139,6 @@ export default function ConsultationPortal() {
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-600 mb-1">
             <span>TeleMed Portal</span>
-            <span>•</span>
             <span>Real-time Text Consultation</span>
           </div>
           <h1 className="text-xl font-bold text-slate-900">
@@ -150,7 +149,7 @@ export default function ConsultationPortal() {
         <div className="flex items-center gap-3">
           <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold border border-emerald-200">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-            <span>Socket Live Sync Connected</span>
+         
           </div>
           <button 
             onClick={() => window.location.href = '/dashboard'}

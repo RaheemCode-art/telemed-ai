@@ -48,6 +48,7 @@ export const getMyAppointments = async (req: AuthRequest, res: Response): Promis
     } else if (req.user?.role === 'patient') {
       appointments = await Appointment.find({ patientId: req.user._id })
         .populate('doctorId', 'firstName lastName specialty institution bio')
+        .populate('patientId', 'firstName lastName email age gender allergies currentMedications current_medications preExistingConditions pre_existing_conditions activeConditions completedOnboarding')
         .sort({ createdAt: -1 });
     } else {
       appointments = await Appointment.find()

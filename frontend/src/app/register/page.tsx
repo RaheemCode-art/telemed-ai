@@ -1,4 +1,5 @@
 'use client';
+import { Activity } from 'lucide-react';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -56,8 +57,8 @@ export default function RegisterPage() {
 
         <div className="relative z-10">
           <Link href="/" className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-white">
-            <div className="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-300 font-black">
-              T
+            <div className="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-600 shadow-sm">
+              <Activity className="w-5 h-5 stroke-[2.5]" />
             </div>
             <span>TeleMed AI</span>
           </Link>
@@ -68,7 +69,7 @@ export default function RegisterPage() {
             Join the leading digital clinical network.
           </h1>
           <p className="text-slate-300 text-base leading-relaxed">
-            Patients can instantly register to upload medical reports and consult practitioners, while doctors are onboarded securely through administrative channels[cite: 1].
+            Patients can instantly register to upload medical reports and consult practitioners, while doctors are onboarded securely through administrative channels.
           </p>
         </div>
 
@@ -79,7 +80,7 @@ export default function RegisterPage() {
             </div>
             <div>
               <div className="font-bold text-sm text-white">Patient Portal Access</div>
-              <div className="text-xs text-slate-400">Direct registration is strictly reserved for patient onboarding[cite: 1].</div>
+              <div className="text-xs text-slate-400">Direct registration is strictly reserved for patient onboarding.</div>
             </div>
           </div>
 
@@ -89,7 +90,7 @@ export default function RegisterPage() {
             </div>
             <div>
               <div className="font-bold text-sm text-purple-200">Are you a Medical Provider?</div>
-              <div className="text-xs text-purple-300/80">Doctor accounts are created and provisioned exclusively by System Administrators[cite: 1].</div>
+              <div className="text-xs text-purple-300/80">Doctor accounts are created and provisioned exclusively by System Administrators.</div>
             </div>
           </div>
         </div>
@@ -102,14 +103,14 @@ export default function RegisterPage() {
               Patient Registration
             </h2>
             <p className="text-sm text-slate-500 mt-1">
-              Create your personal portal to upload reports and book real-time consultations[cite: 1].
+              Create your personal portal to upload reports and book real-time consultations.
             </p>
           </div>
 
           <div className="bg-purple-50 border border-purple-100 rounded-2xl p-4 flex items-start gap-3">
             <Stethoscope className="w-5 h-5 text-purple-600 shrink-0 mt-0.5" />
             <div className="text-xs text-purple-900 leading-relaxed font-medium">
-              <span className="font-bold">Doctor Notice:</span> Medical practitioner accounts cannot be self-registered[cite: 1]. Please contact the System Administrator to receive your secure invite link or activation credentials[cite: 1].
+              <span className="font-bold">Doctor Notice:</span> Medical practitioner accounts cannot be self-registered. Please contact the System Administrator to receive your secure invite link or activation credentials.
             </div>
           </div>
 
