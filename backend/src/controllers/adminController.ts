@@ -75,7 +75,7 @@ export const getAdminOverviewData = async (req: AuthRequest, res: Response): Pro
 export const getAllUsers = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { role } = req.query;
-    const filter = role ? { role } : {};
+    const filter = role ? { role: role as string } : {};
     const users = await User.find(filter).select('-password').sort({ createdAt: -1 });
     res.status(200).json(users);
   } catch (error) {
